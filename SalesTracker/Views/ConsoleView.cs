@@ -223,11 +223,14 @@ namespace SalesTracker
                 ConsoleUtil.DisplayMessage("");
                 Console.Write(
                     "\t" + "1. Travel" + Environment.NewLine +
-                    "\t" + "2. Buy" + Environment.NewLine +
-                    "\t" + "3. Sell" + Environment.NewLine +
-                    "\t" + "4. Inventory" + Environment.NewLine +
-                    "\t" + "5. Display Cities" + Environment.NewLine +
-                    "\t" + "6. Display Account Info" + Environment.NewLine +
+                    "\t" + "2. Setup Account" + Environment.NewLine +
+                    "\t" + "3. Buy" + Environment.NewLine +
+                    "\t" + "4. Sell" + Environment.NewLine +
+                    "\t" + "5. Inventory" + Environment.NewLine +
+                    "\t" + "6. Display Cities" + Environment.NewLine +
+                    "\t" + "7. Display Account Info" + Environment.NewLine +
+                    "\t" + "8. Save Account Info" + Environment.NewLine +
+                    "\t" + "9. Load Account Info" + Environment.NewLine +
 
                     "\t" + "E. Exit" + Environment.NewLine);
 
@@ -243,23 +246,35 @@ namespace SalesTracker
                         usingMenu = false;
                         break;
                     case '2':
-                        userMenuChoice = MenuOption.Buy;
+                        userMenuChoice = MenuOption.SetupAccount;
                         usingMenu = false;
                         break;
                     case '3':
-                        userMenuChoice = MenuOption.Sell;
+                        userMenuChoice = MenuOption.Buy;
                         usingMenu = false;
                         break;
                     case '4':
-                        userMenuChoice = MenuOption.DisplayInventory;
+                        userMenuChoice = MenuOption.Sell;
                         usingMenu = false;
                         break;
                     case '5':
-                        userMenuChoice = MenuOption.DisplayCities;
+                        userMenuChoice = MenuOption.DisplayInventory;
                         usingMenu = false;
                         break;
                     case '6':
+                        userMenuChoice = MenuOption.DisplayCities;
+                        usingMenu = false;
+                        break;
+                    case '7':
                         userMenuChoice = MenuOption.DisplayAccountInfo;
+                        usingMenu = false;
+                        break;
+                    case '8':
+                        userMenuChoice = MenuOption.SaveAccountInfo;
+                        usingMenu = false;
+                        break;
+                    case '9':
+                        userMenuChoice = MenuOption.LoadAccountInfo;
                         usingMenu = false;
                         break;
                     case 'E':
@@ -326,11 +341,15 @@ namespace SalesTracker
             ConsoleUtil.HeaderText = "Account Info";
             ConsoleUtil.DisplayReset();
 
+            DisplayAccountDetail(salesperson);
+            DisplayContinuePrompt();
+
+        }
+        public void DisplayAccountDetail(Salesperson salesperson)
+        {
             ConsoleUtil.DisplayMessage("First Name: " + salesperson.FirstName);
             ConsoleUtil.DisplayMessage("Last Name: " + salesperson.LastName);
             ConsoleUtil.DisplayMessage("Account ID: " + salesperson.AccountID);
-            DisplayContinuePrompt();
-
         }
         private string UppercaseFirst(string s)
         {
@@ -412,7 +431,96 @@ namespace SalesTracker
             DisplayContinuePrompt();
         }
 
+        public void DisplayConfirmLoadAccountInfo(Salesperson salesperson)
+        {
+            ConsoleUtil.HeaderText = "Load Account";
+            ConsoleUtil.DisplayReset();
 
+            ConsoleUtil.DisplayMessage("Account information loaded.");
+
+            DisplayAccountDetail(salesperson);
+
+            DisplayContinuePrompt();
+        }
+
+        public void DisplayConfirmSaveAccountInfo()
+        {
+            ConsoleUtil.HeaderText = "Save Account";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("Account information saved.");
+
+            DisplayContinuePrompt();
+        }
+
+        public bool DisplayLoadAccountInfo(out bool maxAttemptsExceeded)
+        {
+            string userResponse;
+            maxAttemptsExceeded = false;
+
+            ConsoleUtil.HeaderText = "Load Account";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("");
+            userResponse = ConsoleValidator.GetYesNoFromUser(MAXIMUM_ATTEMPTS, "Load the account information?", out maxAttemptsExceeded);
+
+            if (maxAttemptsExceeded)
+            {
+                ConsoleUtil.DisplayMessage("It appears you are having difficulty. You will return to the main menu.");
+                return false;
+            }
+            else
+            {
+                return userResponse == "YES" ? true : false;
+            }
+        }
+
+        public bool DisplayLoadAccountInfo(Salesperson salesperson, out bool maxAttemptsExceeded)
+        {
+            string userResponse;
+            maxAttemptsExceeded = false;
+
+            ConsoleUtil.HeaderText = "Load Account";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("");
+            userResponse = ConsoleValidator.GetYesNoFromUser(MAXIMUM_ATTEMPTS, "Load the account information?", out maxAttemptsExceeded);
+
+            if (maxAttemptsExceeded)
+            {
+                ConsoleUtil.DisplayMessage("It appears you are having difficulty. You will return to the main menu.");
+                return false;
+            }
+            else
+            {
+                return userResponse == "YES" ? true : false;
+            }
+        }
+
+        public bool DisplaySaveAccountInfo(Salesperson salesperson, out bool maxAttemptsExceeded)
+        {
+            string userResponse;
+            maxAttemptsExceeded = false;
+
+            ConsoleUtil.HeaderText = "Save Account";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The current account information.");
+            DisplayAccountDetail(salesperson);
+
+            ConsoleUtil.DisplayMessage("");
+            userResponse = ConsoleValidator.GetYesNoFromUser(MAXIMUM_ATTEMPTS, "Save the account information?", out maxAttemptsExceeded);
+
+            if (maxAttemptsExceeded)
+            {
+                ConsoleUtil.DisplayMessage("It appears you are having difficulty. You will return to the main menu.");
+                return false;
+            }
+            else
+            {
+                return userResponse == "YES" ? true : false;
+            }
+        }
         #endregion
     }
 }

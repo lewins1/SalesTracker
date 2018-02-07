@@ -57,10 +57,11 @@ namespace SalesTracker
             _numberOfUnits = 0;
         }
 
-        public Product(ProductType type, int numberOfUnits)
+        public Product(ProductType type, int numberOfUnits, bool onBackorder)
         {
             _type = type;
             _numberOfUnits = numberOfUnits;
+            _onBackorder = OnBackorder;
         }
 
         #endregion
