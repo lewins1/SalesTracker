@@ -10,6 +10,7 @@ namespace SalesTracker
     {
         static void Main(string[] args)
         {
+            Controller appController = new Controller();
         }
     }
 }
